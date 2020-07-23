@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="CheckWeb">
+    <serverData>
+      <paths name="CheckWeb">
+        <serverdata>
+          <mappings>
+            <mapping deploy="\Check" local="$PROJECT_DIR$" web="\Check" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

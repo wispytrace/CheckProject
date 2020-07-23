@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="e4543780-0b0d-43e6-b570-19cf0ba85dfe" name="CheckWeb" url="http://localhost:80">
+        <fileTransfer port="0" mountedRoot="C:\User_software\wamp\www" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>

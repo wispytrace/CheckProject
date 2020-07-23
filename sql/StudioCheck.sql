@@ -1,0 +1,45 @@
+Drop database studiocheck;
+CREATE DATABASE StudioCheck;
+Use StudioCheck;
+
+CREATE TABLE TeamRecord(
+   team VARCHAR(50) PRIMARY KEY
+);
+CREATE TABLE Staff(
+    id INT UNSIGNED NOT NULL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    sno VARCHAR(100) NOT NULL,
+    permission INT NOT NULL,
+    tutor VARCHAR(100),
+    team VARCHAR(100),
+    status INT,
+    phone VARCHAR(100),
+    password VARCHAR(100)
+);
+
+CREATE TABLE AttendanceRecord(
+    recordid INT UNSIGNED NOT NULL PRIMARY KEY,
+    id INT UNSIGNED NOT NULL,
+    intime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    outime DATETIME ,
+    lastime FLOAT DEFAULT 0.0,
+    isLegal INT UNSIGNED NOT NULL DEFAULT 0,
+    FOREIGN KEY (id) REFERENCES Staff (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE FingerBase(
+    id INT UNSIGNED NOT NULL PRIMARY KEY,
+    template BLOB,
+    FOREIGN KEY (id) REFERENCES Staff (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE SystemSet(
+  device INT UNSIGNED NOT NULL PRIMARY KEY,
+  beginTime VARCHAR(50) NOT NULL,
+  endTime VARCHAR(50) NOT NULL,
+  excellent FLOAT NOT NULL,
+  good FLOAT NOT NULL,
+  fair FLOAT NOT NULL
+);
+
+Insert INTO SystemSet values ( 0, '08:00', '23:30', 8.5, 7.1, 5.7 );
