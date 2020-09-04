@@ -30,6 +30,7 @@ public class LogoHeaderEv {
                 eventRes.mainWindow.logoHeader.userPanel.remove(0);
                 eventRes.mainWindow.logoHeader.userPanel.add(eventRes.mainWindow.logoHeader.login);
                 eventRes.mainWindow.showMessageDialog("注销成功!");
+                eventRes.currentPemission = eventRes.GENERAL;
                 eventRes.mainWindow.logoHeader.userPanel.revalidate();
             }
         });
@@ -59,6 +60,7 @@ public class LogoHeaderEv {
                 eventRes.mainWindow.logoHeader.userPanel.add(new JLabel(userName));
                 eventRes.mainWindow.logoHeader.userPanel.add(eventRes.mainWindow.logoHeader.cancel);
                 eventRes.mainWindow.logoHeader.userPanel.revalidate();
+                eventRes.currentPemission = resultSet.getInt("permission");
                 return;
             }
         }

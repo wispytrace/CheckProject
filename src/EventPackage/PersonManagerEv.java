@@ -24,6 +24,10 @@ public class PersonManagerEv {
             eventRes.mainWindow.navigationPanel.personManager.enroll.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if (eventRes.currentPemission > eventRes.MANAGER){
+                        eventRes.mainWindow.showErrorDialog("权限不足,无法打开");
+                        return;
+                    }
                     isEnroll = true;
                     eventRes.mainWindow.enrollDialog.showEnrollDialog();
                 }
@@ -31,6 +35,10 @@ public class PersonManagerEv {
             eventRes.mainWindow.navigationPanel.personManager.modify.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if (eventRes.currentPemission > eventRes.MANAGER){
+                        eventRes.mainWindow.showErrorDialog("权限不足,无法打开");
+                        return;
+                    }
                     eventRes.mainWindow.modifyDialog.showModifyDialog(eventRes.mainWindow.navigationPanel.personManager.modifyID);
                 }
             });
@@ -187,9 +195,9 @@ public class PersonManagerEv {
                 throw new Exception();
             }
             if (information[2].length() == 1) {
-//                if (Integer.parseInt(information[2]) < guiManager.userPemission){
-//                    throw new Exception();
-//                }
+                if (Integer.parseInt(information[2]) < eventRes.currentPemission){
+                    throw new Exception();
+                }
                 if ((Integer.parseInt(information[2]) < 0) || (Integer.parseInt(information[2]) > 2)) {
                     throw new Exception();
                 }
@@ -237,9 +245,9 @@ public class PersonManagerEv {
             if ((Integer.parseInt(information[2]) < 0) || (Integer.parseInt(information[2]) > 2)) {
                 throw new Exception();
             }
-//            if (Integer.parseInt(information[2]) < guiManager.userPemission){
-//                throw new Exception();
-//            }
+            if (Integer.parseInt(information[2]) < eventRes.currentPemission){
+                throw new Exception();
+            }
         } catch (Exception e) {
             throw new Exception("请输入正确的权限等级");
         }

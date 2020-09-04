@@ -21,6 +21,9 @@ public class SystemSetEv {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
+                        if (eventRes.currentPemission > eventRes.MANAGER){
+                            throw new Exception("权限等级不够");
+                        }
                         if ((eventRes.mainWindow.navigationPanel.systemSet.end.getSelectedIndex() - eventRes.mainWindow.navigationPanel.systemSet.start.getSelectedIndex()) <= 0){
                             throw new Exception("请选择正确的时间范围");
                         }
@@ -77,6 +80,9 @@ public class SystemSetEv {
     }
 
     public void addTeam() throws Exception{
+        if (eventRes.currentPemission > eventRes.MANAGER){
+            throw new Exception("权限等级不够");
+        }
         if (eventRes.mainWindow.navigationPanel.systemSet.groupContent.getText().compareTo("") == 0){
             throw new Exception("输入组名不能为空");
         }
@@ -89,6 +95,9 @@ public class SystemSetEv {
     }
 
     public void deleteTeam() throws Exception{
+        if (eventRes.currentPemission > eventRes.MANAGER){
+            throw new Exception("权限等级不够");
+        }
         JTextField team = eventRes.mainWindow.navigationPanel.systemSet.groupContent;
         if (team.getText().compareTo("")  == 0){
             throw new Exception("请输入需要删除的小组名称");
