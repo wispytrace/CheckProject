@@ -18,27 +18,23 @@ public class WorkThread extends Thread{
 
     private int recordid = 0;
     //Work
-    byte[] img = new byte[mainEvent.eventRes.fingerManager.figureHeight * mainEvent.eventRes.fingerManager.figureWidth];
-    byte[] template = new byte[mainEvent.eventRes.fingerManager.templateLen];
+    byte[] img = null;
+    byte[] template = null;
     int[] fid = new int[1];
     //Enroll
-    byte[][] preRegTemplate = new byte[mainEvent.eventRes.fingerManager.CONFIRM_TIMES][mainEvent.eventRes.fingerManager.templateLen];
+    byte[][] preRegTemplate = null;
     int recordTimes = 0;
 
 
     public WorkThread(MainEvent mainEvent){
         super();
         this.mainEvent = mainEvent;
+        this.img = new byte[mainEvent.eventRes.fingerManager.figureHeight * mainEvent.eventRes.fingerManager.figureWidth];
+        this.template = new byte[mainEvent.eventRes.fingerManager.templateLen];
+        this.preRegTemplate = new byte[mainEvent.eventRes.fingerManager.CONFIRM_TIMES][mainEvent.eventRes.fingerManager.templateLen];
     }
 
 
-
-    public void fingerLoad() throws Exception{
-        ResultSet resultSet = mainEvent.eventRes.dbManager.dbSearch("FingerBase", "*", "");
-        while (resultSet.next()){
-            mainEvent.eventRes.fingerManager.fingerAdd(resultSet.getInt("id"), resultSet.getBytes("template"));
-        }
-    }
 
     private boolean isLegal(float lastime, String  intime) throws Exception{
         if (lastime > 8.0){
@@ -124,8 +120,9 @@ public class WorkThread extends Thread{
                 mainEvent.eventRes.mainWindow.showMessageDialog("请再次输入指纹" + (3 - recordTimes) + "次");
             }
         }
-        template = new byte[mainEvent.eventRes.fingerManager.templateLen];
-        mainEvent.eventRes.fingerManager.fingerMerge(preRegTemplate, template);
+        mainEvent.personManagerEv.template = new byte[mainEvent.eventRes.fingerManager.templateLen];
+        mainEvent.eventRes.fingerManager.fingerMerge(preRegTemplate, mainEvent.personManagerEv.template);
+        mainEvent.personManagerEv.isEnroll = false;
         mainEvent.eventRes.mainWindow.showMessageDialog("指纹录入成功！");
     }
 
@@ -133,8 +130,9 @@ public class WorkThread extends Thread{
         super.run();
 
         try {
-           recordid = mainEvent.eventRes.dbManager.dbGetMaxId("AttendanceRecord");
+           recordid = mainEvent.eventRes.dbManager.dbGetMaxId("AttendanceRecord", "recordid");
         }catch (Exception e){
+            System.out.println(dateFormat.format(new Date())+" 数据库连接失败, 错误提示"+ e.getMessage());
             mainEvent.eventRes.mainWindow.showErrorDialog(e.getMessage());
         }
         while (true){
@@ -149,10 +147,12 @@ public class WorkThread extends Thread{
                 try{
                     Thread.sleep(500);
                 }catch (InterruptedException ie){
+                    System.out.println(dateFormat.format(new Date())+" sleep语句发生错误, 错误提示"+ e.getMessage());
                     mainEvent.eventRes.mainWindow.showErrorDialog(ie.getMessage());
                 }
             }catch (Exception e){
                 recordTimes = 0;
+                System.out.println(dateFormat.format(new Date())+" 语句发生错误, 错误提示"+ e.getMessage());
                 mainEvent.eventRes.mainWindow.showErrorDialog(e.getMessage());
             }
         }

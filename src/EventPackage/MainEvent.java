@@ -24,12 +24,14 @@ public class MainEvent {
         this.personManagerEv = new PersonManagerEv(eventRes);
         this.systemSetEv = new SystemSetEv(eventRes);
         this.recordEv = new RecordEv(eventRes);
+        this.attenStastisEv = new AttenStastisEv(eventRes);
         recordEv.doInit();
         logoHeaderEv.initLogoHeader();
         attenDetailEv.initAttenDetail();
         personManagerEv.initPersonManager();
         personStatusEv.initPersonStatus();
         systemSetEv.initSystemSet();
+        attenStastisEv.initAttenStastis();
     }
 
 }

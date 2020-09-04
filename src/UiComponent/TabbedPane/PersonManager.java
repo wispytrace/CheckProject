@@ -49,6 +49,7 @@ public class PersonManager extends JPanel {
         personTable = new PersonTable(rowdata);
         scrollPane = new JScrollPane(personTable);
         personResult.add(scrollPane);
+        personResult.revalidate();
     }
 
 

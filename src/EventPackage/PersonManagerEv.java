@@ -25,7 +25,7 @@ public class PersonManagerEv {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     isEnroll = true;
-                    eventRes.mainWindow.loginDialog.showLoginDialog();
+                    eventRes.mainWindow.enrollDialog.showEnrollDialog();
                 }
             });
             eventRes.mainWindow.navigationPanel.personManager.modify.addActionListener(new ActionListener() {
@@ -103,14 +103,14 @@ public class PersonManagerEv {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        String nameContent = eventRes.mainWindow.enrollDialog.nameContent.getText();
-                        String snoContent = eventRes.mainWindow.enrollDialog.snoContent.getText();
-                        String permissionContent = eventRes.mainWindow.enrollDialog.permissionContent.getText();
-                        String tutorContent = eventRes.mainWindow.enrollDialog.tutorContent.getText();
-                        String teamContent = eventRes.mainWindow.enrollDialog.teamContent.getText();
-                        String phoneContent = eventRes.mainWindow.enrollDialog.phoneContent.getText();
-                        String passwordContent = eventRes.mainWindow.enrollDialog.passwordContent.getText();
-                        String passwordAgainContent = eventRes.mainWindow.enrollDialog.passwordAgainContent.getText();
+                        String nameContent = eventRes.mainWindow.modifyDialog.nameContent.getText();
+                        String snoContent = eventRes.mainWindow.modifyDialog.snoContent.getText();
+                        String permissionContent = eventRes.mainWindow.modifyDialog.permissionContent.getText();
+                        String tutorContent = eventRes.mainWindow.modifyDialog.tutorContent.getText();
+                        String teamContent = eventRes.mainWindow.modifyDialog.teamContent.getText();
+                        String phoneContent = eventRes.mainWindow.modifyDialog.phoneContent.getText();
+                        String passwordContent = eventRes.mainWindow.modifyDialog.passwordContent.getText();
+                        String passwordAgainContent = eventRes.mainWindow.modifyDialog.passwordAgainContent.getText();
                         doPersonModyify(new String[]{nameContent, snoContent, permissionContent, tutorContent, teamContent, phoneContent
                                 , passwordContent, passwordAgainContent}, eventRes.mainWindow.navigationPanel.personManager.modifyID);
                     } catch (Exception e1) {
@@ -145,11 +145,13 @@ public class PersonManagerEv {
     public void deletePersonInfo(String id) throws Exception{
         eventRes.dbManager.dbDelete("Staff", "id", id);
         eventRes.dbManager.dbDelete("FingerBase", "id", id);
-        eventRes.dbManager.dbDelete("AttendanceRecord", id, id);
+        eventRes.dbManager.dbDelete("AttendanceRecord", "id", id);
         eventRes.fingerManager.fingerDelete(Integer.parseInt(id));
         flushPersonTable();
         flushStatusPanel();
+        flushNameList();
         eventRes.mainWindow.showMessageDialog("删除成功");
+        eventRes.mainWindow.modifyDialog.setVisible(false);
     }
 
     public void doPersonModyify(String[] information, String id) throws Exception{
@@ -212,7 +214,10 @@ public class PersonManagerEv {
             eventRes.dbManager.dbUpdateChar("Staff", "phone", information[6], "id="+id);
         }
         eventRes.mainWindow.showMessageDialog("修改成功");
+        eventRes.mainWindow.modifyDialog.setVisible(false);
         flushPersonTable();
+        flushNameList();
+        flushStatusPanel();
     }
 
     public void doPersonEnroll(String[] information, byte[] fingerTemplate) throws Exception {
@@ -266,14 +271,17 @@ public class PersonManagerEv {
         if (information[6].length() > 20) {
             throw new Exception("密码输入过长, 请重新输入");
         }
-        int id = eventRes.dbManager.dbGetMaxId("Staff");
+        int id = eventRes.dbManager.dbGetMaxId("Staff", "id");
 //       dbManager.dbInsert(id, information[0].getBytes(), information[1].getBytes(), Integer.parseInt(information[2]), information[3].getBytes(), information[4].getBytes(), 0, information[5].getBytes(), information[6].getBytes());
         eventRes.dbManager.dbInsert(id, information[0], information[1], Integer.parseInt(information[2]), information[3], information[4], 0, information[5], information[6]);
         eventRes.dbManager.dbInsert(id, fingerTemplate);
         eventRes.fingerManager.fingerAdd(id, fingerTemplate);
         eventRes.mainWindow.showMessageDialog("人员录入成功!");
+        template = null;
+        eventRes.mainWindow.enrollDialog.setVisible(false);
         flushStatusPanel();
         flushPersonTable();
+        flushNameList();
     }
 
     public Object[][] getPersonTable() throws Exception {
@@ -285,7 +293,6 @@ public class PersonManagerEv {
         } else {
             rowdata = new Object[resultSet.getRow()][7];
         }
-        String[] columnName = new String[]{"编号", "姓名", "小组", "导师", "学号", "手机号码", "操作"};
         resultSet.beforeFirst();
         while (resultSet.next()) {
             rowdata[resultSet.getRow() - 1][0] = resultSet.getString("id");
@@ -303,6 +310,10 @@ public class PersonManagerEv {
         eventRes.mainWindow.navigationPanel.personManager.flushTable(getPersonTable());
     }
 
+    public void flushNameList() throws Exception{
+        eventRes.mainWindow.navigationPanel.attenStastis.flushNameList(getAllStaffName());
+    }
+
     public void flushStatusPanel() throws Exception {
         ResultSet resultSet = eventRes.dbManager.dbSearch("Staff", "*", " ");
         resultSet.last();
@@ -310,5 +321,15 @@ public class PersonManagerEv {
         resultSet.beforeFirst();
         eventRes.mainWindow.navigationPanel.personStatus.setGridNum(num);
         eventRes.mainWindow.navigationPanel.personStatus.flushStatusPanel(resultSet);
+    }
+
+    public String[] getAllStaffName() throws Exception{
+        List group = new ArrayList<>();
+        group.add("全部");
+        ResultSet resultSet = eventRes.dbManager.dbSearch("Staff", "name", "");
+        while (resultSet.next()){
+            group.add(resultSet.getString("name"));
+        }
+        return (String[])group.toArray(new String[group.size()]);
     }
 }

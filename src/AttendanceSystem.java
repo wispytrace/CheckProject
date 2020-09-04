@@ -19,63 +19,63 @@ public class AttendanceSystem {
         dbManager = new DbManager();
         fingerManager = new FingerManager();
         mainWindow = new MainWindow();
-        initAllDriver();
-        mainEvent = new MainEvent(dbManager, fingerManager, mainWindow);
-        workThread = new WorkThread(mainEvent);
-
+        initSystem();
     }
 
-    public void initAllDriver(){
+
+    public void initSystem(){
         try {
             fingerManager.deviceInit();
             dbManager.dbConnect("root", "root");
-            mainWindow.addWindowListener(new WindowListener() {
-                @Override
-                public void windowOpened(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    closeSystem();
-                }
-
-                @Override
-                public void windowClosed(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowIconified(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowDeiconified(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowActivated(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowDeactivated(WindowEvent e) {
-
-                }
-            });
         }catch (Exception e){
             mainWindow.showErrorDialog(e.getMessage());
             System.exit(-1);
         }
+        mainWindow.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeSystem();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
+        mainEvent = new MainEvent(dbManager, fingerManager, mainWindow);
+        workThread = new WorkThread(mainEvent);
     }
 
     public void closeSystem(){
         try {
+            mainEvent.recordEv.doClose();
             fingerManager.deviceClose();
             dbManager.dbClose();
-            mainEvent.recordEv.doClose();
             System.out.println("Close Successful!");
             System.exit(0);
         }catch (Exception e){

@@ -137,11 +137,18 @@ public class DbManager {
         ResultSet result = statement.executeQuery("select " + field + " from " + table + " " + condition );
         return result;
     }
-    public int dbGetMaxId(String table) throws Exception{
+    public int dbGetMaxId(String table, String columnLabel) throws Exception{
         int result = 0;
         ResultSet resultSet = dbSearch(table, "*", "");
-        resultSet.last();
-        result = resultSet.getRow()+1;
+        while (resultSet.next()){
+            int id = resultSet.getInt(columnLabel);
+            if (id > result){
+                result = id;
+            }
+        }
+//        resultSet.last();
+//        result = resultSet.getRow()+1;
+        result = result + 1;
         return result;
     }
 }

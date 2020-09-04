@@ -59,7 +59,6 @@ public class FingerManager {
         figureWidth = byteArrayToInt(paramValue);
         FingerprintSensorEx.GetParameters(myDevice, 2, paramValue, size);
         figureHeight = byteArrayToInt(paramValue);
-            fingerLoad("C:\\Users\\10254\\Documents\\GraduateDesign\\最新的 ZKFinger SDK 5.0.0.29\\ZKFinger SDK 5.0.0.29\\Java\\sample\\ZKFinger Demo2\\DbBase");
     }
     /**
      * Close device

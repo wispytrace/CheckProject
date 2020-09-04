@@ -178,6 +178,7 @@ public class AttenDetail extends JPanel {
         detailTable = new DetailTable(rowdata);
         scrollPane = new JScrollPane(detailTable);
         resultPanel.add(scrollPane);
+        resultPanel.revalidate();
     }
 
     private class DetailTable extends JTable{
@@ -283,10 +284,10 @@ public class AttenDetail extends JPanel {
     }
 
     public class DatePicker {
-        int month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
-        int year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);;
+        int m_month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
+        int m_year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);;
         JLabel l = new JLabel("", JLabel.CENTER);
-        String day = "";
+        String m_day = "";
         JDialog d;
         JButton[] button = new JButton[49];
 
@@ -305,7 +306,7 @@ public class AttenDetail extends JPanel {
                 if (x > 6)
                     button[x].addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
-                            day = button[selection].getActionCommand();
+                            m_day = button[selection].getActionCommand();
                             d.dispose();
                         }
                     });
@@ -319,10 +320,11 @@ public class AttenDetail extends JPanel {
             JButton previous = new JButton("<< 前一月");
             previous.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ae) {
-                    month--;
-                    if (month <= 0){
-                        month = 12;
-                        year--;
+                    m_month--;
+
+                    if (m_month <= 0){
+                        m_month = 12;
+                        m_year--;
                     }
                     displayDate();
                 }
@@ -332,11 +334,12 @@ public class AttenDetail extends JPanel {
             JButton next = new JButton("后一月 >>");
             next.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ae) {
-                    month++;
-                    if (month > 12){
-                        month = 1;
-                        year++;
+                    m_month++;
+                    if (m_month > 12){
+                        m_month = 1;
+                        m_year++;
                     }
+                    displayDate();
                 }
             });
             p2.add(next);
@@ -354,7 +357,7 @@ public class AttenDetail extends JPanel {
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
                     "yyyy MMMM");
             java.util.Calendar cal = java.util.Calendar.getInstance();
-            cal.set(year, month, 1);
+            cal.set(m_year, m_month, 1);
             int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
             int daysInMonth = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
             for (int x = 6 + dayOfWeek, day = 1; day <= daysInMonth; x++, day++)
@@ -364,14 +367,13 @@ public class AttenDetail extends JPanel {
         }
 
         public String setPickedDate() {
-            if (day.equals(""))
-                return day;
+            if (m_day.equals(""))
+                return m_day;
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
                     "yyyy-MM-dd");
             java.util.Calendar cal = java.util.Calendar.getInstance();
-            cal.set(year, month, Integer.parseInt(day));
+            cal.set(m_year, m_month, Integer.parseInt(m_day));
             return sdf.format(cal.getTime());
         }
     }
 }
-

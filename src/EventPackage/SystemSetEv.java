@@ -77,7 +77,7 @@ public class SystemSetEv {
     }
 
     public void addTeam() throws Exception{
-        if (eventRes.mainWindow.navigationPanel.systemSet.groupContent.getText() == ""){
+        if (eventRes.mainWindow.navigationPanel.systemSet.groupContent.getText().compareTo("") == 0){
             throw new Exception("输入组名不能为空");
         }
         eventRes.dbManager.dbInsert("TeamRecord", "team ", "'" + eventRes.mainWindow.navigationPanel.systemSet.groupContent.getText() + "'");
@@ -90,6 +90,9 @@ public class SystemSetEv {
 
     public void deleteTeam() throws Exception{
         JTextField team = eventRes.mainWindow.navigationPanel.systemSet.groupContent;
+        if (team.getText().compareTo("")  == 0){
+            throw new Exception("请输入需要删除的小组名称");
+        }
         eventRes.dbManager.dbDelete("TeamRecord", "team", "'" + team.getText() + "'");
         eventRes.mainWindow.navigationPanel.attenDetail.teamSelect.removeItem(team.getText());
         eventRes.mainWindow.navigationPanel.attenDetail.teamSelect.revalidate();

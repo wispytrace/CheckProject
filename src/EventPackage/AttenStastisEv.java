@@ -60,8 +60,8 @@ public class AttenStastisEv {
                 public void focusGained(FocusEvent e) {
                     eventRes.mainWindow.navigationPanel.attenStastis.end.setText(eventRes.mainWindow.navigationPanel.attenStastis.new DatePicker(eventRes.mainWindow.navigationPanel.attenStastis.clock).setPickedDate());
                     setStasticTimeChoose(2);
-                    eventRes.mainWindow.navigationPanel.attenStastis.start.setFocusable(false);
-                    eventRes.mainWindow.navigationPanel.attenStastis.start.setFocusable(true);
+                    eventRes.mainWindow.navigationPanel.attenStastis.end.setFocusable(false);
+                    eventRes.mainWindow.navigationPanel.attenStastis.end.setFocusable(true);
                 }
 
                 @Override
@@ -132,6 +132,9 @@ public class AttenStastisEv {
         }
         return (String[])group.toArray(new String[group.size()]);
     }
+
+
+
 
     public String[] getPersonStastic(String name) throws Exception{
         ResultSet resultSet = eventRes.dbManager.dbSearch("SystemSet","*", "");

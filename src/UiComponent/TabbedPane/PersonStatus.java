@@ -16,8 +16,8 @@ public class PersonStatus extends JPanel{
 
     private int gridNum = DEFAULT_GRID_NUM;
 
-    public void PersonStatus(){
-
+    public  PersonStatus(){
+        this.setLayout(new BorderLayout());
     }
 
     public void setGridNum(int num){

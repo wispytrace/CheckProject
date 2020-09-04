@@ -23,6 +23,7 @@ public class RecordEv {
             initTimeConstrain();
             fixInitRecord();
             fixPersonStatus();
+            fingerLoad();
         } catch (Exception e) {
             eventRes.mainWindow.showErrorDialog(e.getMessage());
         }
@@ -34,6 +35,14 @@ public class RecordEv {
             fixCloseRecord();
         } catch (Exception e) {
             eventRes.mainWindow.showErrorDialog(e.getMessage());
+        }
+    }
+
+
+    public void fingerLoad() throws Exception{
+        ResultSet resultSet = eventRes.dbManager.dbSearch("FingerBase", "*", "");
+        while (resultSet.next()){
+            eventRes.fingerManager.fingerAdd(resultSet.getInt("id"), resultSet.getBytes("template"));
         }
     }
 
@@ -94,4 +103,5 @@ public class RecordEv {
         }
         return true;
     }
+
 }

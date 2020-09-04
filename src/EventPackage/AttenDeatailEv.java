@@ -68,10 +68,10 @@ public class AttenDeatailEv {
             eventRes.mainWindow.navigationPanel.attenDetail.end.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent focusEvent) {
-                    eventRes.mainWindow.navigationPanel.attenDetail.start.setText(eventRes.mainWindow.navigationPanel.attenDetail.new DatePicker(eventRes.mainWindow.navigationPanel.attenDetail.clock).setPickedDate());
+                    eventRes.mainWindow.navigationPanel.attenDetail.end.setText(eventRes.mainWindow.navigationPanel.attenDetail.new DatePicker(eventRes.mainWindow.navigationPanel.attenDetail.clock).setPickedDate());
                     setDetailTimeSelectButton(4);
-                    eventRes.mainWindow.navigationPanel.attenDetail.start.setFocusable(false);
-                    eventRes.mainWindow.navigationPanel.attenDetail.start.setFocusable(true);
+                    eventRes.mainWindow.navigationPanel.attenDetail.end.setFocusable(false);
+                    eventRes.mainWindow.navigationPanel.attenDetail.end.setFocusable(true);
                 }
                 @Override
                 public void focusLost(FocusEvent focusEvent) {
