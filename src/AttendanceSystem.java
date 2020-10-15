@@ -1,6 +1,7 @@
 import BottomDriver.DbManager;
 import BottomDriver.FingerManager;
 import EventPackage.MainEvent;
+import ThreadPackage.TimerThread;
 import ThreadPackage.WorkThread;
 import UiComponent.MainWindow;
 
@@ -14,6 +15,7 @@ public class AttendanceSystem {
     public WorkThread workThread = null;
     public MainEvent mainEvent = null;
     public MainWindow mainWindow = null;
+    public TimerThread timerThread = null;
 
     public AttendanceSystem(){
         dbManager = new DbManager();
@@ -69,6 +71,7 @@ public class AttendanceSystem {
         });
         mainEvent = new MainEvent(dbManager, fingerManager, mainWindow);
         workThread = new WorkThread(mainEvent);
+        timerThread = new TimerThread(mainEvent);
     }
 
     public void closeSystem(){
@@ -86,6 +89,7 @@ public class AttendanceSystem {
 
     public void startAll(){
         workThread.start();
+        timerThread.setDbTimer();
         mainWindow.setVisible(true);
     }
 

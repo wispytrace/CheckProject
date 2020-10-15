@@ -1,4 +1,4 @@
-package BottomDriver;
+package OLD;
 
 import java.io.ByteArrayInputStream;
 import java.sql.*;
@@ -16,7 +16,7 @@ public class DbManager {
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static String URL = "jdbc:mysql://localhost:3306";
     private static String DBNAME = "StudioCheck";
-    private  Connection connect;
+    private  Connection connect = null;
 
     public void setUrl(String ip_port){
         URL = "jdbc:mysql://"+ ip_port;
@@ -117,12 +117,10 @@ public class DbManager {
         if ((connect == null) || connect.isClosed()){
             throw new Exception("数据库连接已被关闭,请重新打开软件!");
         }
-//        PreparedStatement statement = connect.prepareStatement("update  "+table+" set "+ field + "=? where " + condition);
-//        statement.setBytes(1, value.getBytes());
-//        statement.executeUpdate();
-//        statement.close();
-        Statement statement = connect.createStatement();
-        statement.execute("update " + table + " set " + field + "= '" + value + "' where " + condition);
+        PreparedStatement statement = connect.prepareStatement("update  "+table+" set "+ field + "=? where " + condition);
+        statement.setBytes(1, value.getBytes());
+        statement.executeUpdate();
+        statement.close();
     }
     public void dbDelete(String table, String field, String value)throws Exception{
         if ((connect == null) || connect.isClosed()){
@@ -139,18 +137,11 @@ public class DbManager {
         ResultSet result = statement.executeQuery("select " + field + " from " + table + " " + condition );
         return result;
     }
-    public int dbGetMaxId(String table, String columnLabel) throws Exception{
+    public int dbGetMaxId(String table) throws Exception{
         int result = 0;
         ResultSet resultSet = dbSearch(table, "*", "");
-        while (resultSet.next()){
-            int id = resultSet.getInt(columnLabel);
-            if (id > result){
-                result = id;
-            }
-        }
-//        resultSet.last();
-//        result = resultSet.getRow()+1;
-        result = result + 1;
+        resultSet.last();
+        result = resultSet.getRow()+1;
         return result;
     }
 }

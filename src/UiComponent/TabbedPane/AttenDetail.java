@@ -162,7 +162,7 @@ public class AttenDetail extends JPanel {
 
     public void flushTeamList(String[] teamList){
         teamSelect.removeAllItems();
-        teamSelect.addItem("全部");
+//        teamSelect.addItem("全部");
         for (int i = 0; i < teamList.length; i++){
             teamSelect.addItem(teamList[i]);
         }

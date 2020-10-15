@@ -1,4 +1,4 @@
-package BottomDriver;
+package OLD;
 
 import com.zkteco.biometric.FingerprintSensorErrorCode;
 import com.zkteco.biometric.FingerprintSensorEx;
@@ -59,6 +59,7 @@ public class FingerManager {
         figureWidth = byteArrayToInt(paramValue);
         FingerprintSensorEx.GetParameters(myDevice, 2, paramValue, size);
         figureHeight = byteArrayToInt(paramValue);
+            fingerLoad("C:\\Users\\10254\\Documents\\GraduateDesign\\最新的 ZKFinger SDK 5.0.0.29\\ZKFinger SDK 5.0.0.29\\Java\\sample\\ZKFinger Demo2\\DbBase");
     }
     /**
      * Close device
@@ -125,7 +126,6 @@ public class FingerManager {
     public static void fingerIdentity(byte[] template, int[] fid) throws Exception{
         int[] score = new int[1];
         if (FingerprintSensorEx.DBIdentify(myAlgorithms, template, fid, score) < 0){
-            lightControl("white");
             throw new Exception("Fail To Find a Fingerprint In memory, Please Register First");
         }
     }

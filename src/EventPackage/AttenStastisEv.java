@@ -149,7 +149,7 @@ public class AttenStastisEv {
         float totalTime = 0;
         int normalFrequency = 0;
         int abnormalFrequency = 0;
-        long totalDay = (DateFormat.parse(beginTime).getTime() - DateFormat.parse(endTime).getTime()) / DAY;
+        long totalDay = (DateFormat.parse(endTime).getTime() - DateFormat.parse(beginTime).getTime()) / DAY;
         while (resultSet.next()){
             totalTime += resultSet.getFloat("lastime");
             if (resultSet.getInt("isLegal") == 0){
@@ -275,20 +275,37 @@ public class AttenStastisEv {
 
     public void doCheckFileOut (File file) throws Exception{
         String[] staffName = getAllStaffName();
+        if (file == null){
+            return;
+        }
         FileWriter fw = new FileWriter(file);
         for (int i = 1; i < staffName.length; i++){
             fw.write(staffName[i]+"\r\n");
             ArrayList recordList = new ArrayList();
             String[] result = getPersonStastic(staffName[i], recordList);
             for (int j = 0; j < recordList.toArray().length ; j = j + 4){
-                fw.write("进入时间:\t" + recordList.get(j).toString());
-                fw.write("\t离开时间:\t" + recordList.get(j + 1).toString());
-                fw.write("\t持续时间:\t" + recordList.get(j + 2).toString());
-                fw.write("\t记录状态:\t" + recordList.get(j + 3).toString() + "\r\n");
+                fw.write("进入时间:    " + recordList.get(j).toString());
+                fw.write("    离开时间:    " + recordList.get(j + 1).toString());
+                fw.write("    持续时间:    " + timestampFromNumber(recordList.get(j + 2).toString()));
+                fw.write("    记录状态:    " + recordList.get(j + 3).toString() + "\r\n");
+                fw.flush();
             }
             fw.write("统计信息如下:\r\n");
-            fw.write("总持续时间:\t" + result[0] + "\t总出入次数:\t" + result[1] + "\t考勤评价:\t" + result[2] + "\t异常记录次数:\t" + result[3] + "\r\n\r\n\r\n");
+//            fw.write("总持续时间:    " + timestampFromNumber(result[0]) + "    总出入次数:    " + result[1] + "    考勤评价:    " + result[2] + "    异常记录次数:    " + result[3] + "\r\n\r\n\r\n");
+            fw.write("总持续时间:    " + timestampFromNumber(result[0]) + "    总出入次数:    " + result[1] +  "    异常记录次数:    " + result[3] + "\r\n\r\n\r\n");
+
+            fw.flush();
         }
         fw.close();
+    }
+
+    private String timestampFromNumber(String timeNumber){
+        int intTimeNumber = (int)(Float.parseFloat(timeNumber)*3600);
+        int hours = intTimeNumber/3600;
+        int minutes = (intTimeNumber - hours*3600)/60;
+        int seconds = intTimeNumber - hours*3600 - minutes*60;
+        String timestamp = String.format("%02d时%02d分%02d秒", hours, minutes, seconds);
+        return timestamp;
+
     }
 }

