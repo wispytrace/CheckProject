@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $db =new mysqli('localhost', 'root', 'root', 'studiocheck');
 if (mysqli_connect_errno()) {
     echo "<script>

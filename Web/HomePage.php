@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 if (!isset($_POST['name']) || !isset($_POST['password']) || empty($_POST['name']) || empty($_POST['password'])){
     echo "<script>

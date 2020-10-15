@@ -82,7 +82,7 @@ while ($stmt->fetch()) {
     $jsonMessage["data"][$index]["totalNum"] = $totalNum;
     $jsonMessage["data"][$index]["totalInLegal"] = $totalInLegal;
     if ($averageTime > $excellent){
-            $jsonMessage["data"][$index]["evaluate"] = "优秀";
+        $jsonMessage["data"][$index]["evaluate"] = "优秀";
     }else if ($averageTime > $good){
         $jsonMessage["data"][$index]["evaluate"] = "良好";
     }else if ($averageTime > $fair){

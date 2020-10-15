@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $db =new mysqli('localhost', 'root', 'root', 'studiocheck');
 if (mysqli_connect_errno()) {
     echo "<script>
@@ -25,10 +25,10 @@ echo
 while ($stmt->fetch()){
     echo '<tr>';
     echo '<td>'.$name.'</td>';
-    if ($status==1) {
+    if ($status==0) {
         echo '<td> 离线</td>';
     }else{
-        echo '<td color="red">在线</td>';
+        echo '<td style="color: red">在线</td>';
     }
     echo '</tr>';
 }
